@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0e2a4e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>PDV-WD | Gestão Comercial v2</title>
+<style>
+:root{--bg:#f3f6fb;--panel:#ffffff;--text:#182740;--muted:#64748b;--line:#e2e8f2;--primary:#1769d2;--primary2:#0f50a8;--accent:#f58220;--nav:#0e2a4e;--green:#15803d;--red:#dc2626;--amber:#b45309;--shadow:0 6px 20px rgba(14,42,78,.07)}
+body.dark{--bg:#0b1524;--panel:#122036;--text:#eaf1fb;--muted:#93a6c2;--line:#273956;--nav:#081426;--shadow:0 6px 20px rgba(0,0,0,.3)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:10px;padding:10px 14px;font-weight:650}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #9db4ff;outline-offset:2px}.primary{background:linear-gradient(135deg,#1b74e0,#145bbb);color:#fff;box-shadow:0 4px 10px rgba(23,105,210,.18)}.primary:hover{background:linear-gradient(135deg,#145bbb,#0f50a8)}.secondary{background:#eaf2fc;color:#164b8d}.danger{background:#fdecec;color:var(--red)}.ghost{background:transparent;color:var(--muted)}.block{width:100%}
+.app{min-height:100vh;display:grid;grid-template-columns:1fr}
+.sidebar{background:linear-gradient(180deg,#123a68,#0c2342);color:#fff;padding:22px 14px;display:flex;flex-direction:column;gap:22px;border-right:1px solid #1f4a7d;position:fixed;inset:0 auto 0 0;width:260px;z-index:40;transform:translateX(-105%);transition:transform .2s ease;box-shadow:10px 0 40px rgba(0,0,0,.25);overflow-y:auto}
+.sidebar.open{transform:translateX(0)}
+.brand{display:flex;align-items:center;gap:11px;padding:0 9px}.logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#ffad4d,#f58220);display:grid;place-items:center;font-weight:900;color:#0e2a4e;box-shadow:0 5px 14px rgba(245,130,32,.25)}.brand h1{font-size:17px;margin:0}.brand small{display:block;color:#b7c9e2;font-size:11px;margin-top:3px}
+.nav-label{color:#9eb6d6;text-transform:uppercase;font-size:10px;font-weight:800;letter-spacing:.13em;padding:0 12px;margin-bottom:7px}
+.nav{display:grid;gap:4px}.nav button{color:#d9e6f6;background:transparent;text-align:left;display:flex;gap:12px;align-items:center;padding:11px 12px;border-radius:9px;font-weight:550}.nav button.active,.nav button:hover{background:#1b477b;color:#fff}.nav button.active{box-shadow:inset 3px 0 0 #ff922e}.nav .ico{width:20px;text-align:center}
+.sidebar-bottom{margin-top:auto;color:#8fa6c4;font-size:12px;padding:10px;line-height:1.6}
+.main{min-width:0}
+.topbar{height:72px;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;gap:14px;position:sticky;top:0;z-index:5}.top-left{display:flex;align-items:center;gap:12px}.topbar h2{font-size:18px;margin:0}.crumb{font-size:12px;color:var(--muted);margin-top:3px}.top-actions{display:flex;align-items:center;gap:10px}.search{width:min(250px,30vw);border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:10px;padding:10px 12px}.avatar{width:36px;height:36px;display:grid;place-items:center;background:#fff0df;color:#a64d00;border-radius:50%;font-weight:800;font-size:13px}.logout-btn{background:#eaf2fc;color:#164b8d;font-size:12px;padding:8px 12px}.mobile-menu{display:inline-block;background:#eaf2fc;color:#164b8d}
+.content{padding:26px 28px;max-width:1500px;margin:auto}
+.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:22px;flex-wrap:wrap}.page-head h3{margin:0;font-size:24px;letter-spacing:-.02em}.page-head p{margin:7px 0 0;color:var(--muted);font-size:14px}.head-buttons{display:flex;gap:8px;flex-wrap:wrap}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}.card,.panel{background:var(--panel);border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow)}
+.metric{padding:18px}.metric-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px;font-weight:650}.metric-icon{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:#e8f2ff;color:#1769d2;font-size:16px}.metric strong{display:block;font-size:26px;margin:13px 0 5px;letter-spacing:-.03em}.metric small{color:var(--muted);font-size:12px}
+.grid-main{display:grid;grid-template-columns:1.5fr 1fr;gap:16px}
+.panel{padding:20px;margin-bottom:16px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px;flex-wrap:wrap}.panel-head h4{margin:0;font-size:15px}.panel-head small{color:var(--muted)}
+.chart{height:190px;display:flex;align-items:flex-end;gap:12px;padding:10px 4px 0;border-bottom:1px solid var(--line);background:repeating-linear-gradient(to bottom,transparent 0,transparent 45px,#e9eef6 46px)}body.dark .chart{background:repeating-linear-gradient(to bottom,transparent 0,transparent 45px,#273956 46px)}.bar-group{height:100%;flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:7px;min-width:0}.bar{width:min(27px,80%);border-radius:6px 6px 2px 2px;background:linear-gradient(180deg,#ffad4d,#f58220);min-height:4px}.bar-label{font-size:10px;color:var(--muted);padding-bottom:8px}
+.activity{display:grid;gap:12px}.activity-item{display:flex;align-items:center;gap:11px}.dot{width:35px;height:35px;border-radius:11px;display:grid;place-items:center;background:#edf7f2;flex-shrink:0}.activity-item b{display:block;font-size:13px}.activity-item small{color:var(--muted);font-size:11px}.activity-item .amount{margin-left:auto;font-size:12px;font-weight:750}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}.toolbar input,.toolbar select,.field input,.field select,.field textarea{border:1px solid var(--line);border-radius:9px;padding:10px 11px;background:var(--panel);color:var(--text)}.toolbar input{flex:1;min-width:170px}
+.table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:13px;white-space:nowrap}th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);background:#f4f7fc}body.dark th{background:#1a2a44}td,th{padding:12px 14px;border-bottom:1px solid var(--line)}tbody tr:last-child td{border-bottom:0}.row-actions{display:flex;gap:6px}
+.status{display:inline-flex;border-radius:30px;padding:5px 10px;font-size:10px;font-weight:750}.status.ok{background:#e4f7ed;color:#17784f}.status.low{background:#fff0df;color:#a95800}.status.off{background:#eef0f4;color:#697386}.status.cancel{background:#fdecec;color:#b91c1c}
+.pos-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(320px,.9fr);gap:16px;align-items:start}
+.category-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}.category-row button{background:#edf4fc;color:#315778;padding:8px 13px}.category-row button.active{background:#1769d2;color:#fff}
+.product-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.product{border:1px solid var(--line);border-radius:12px;background:var(--panel);text-align:left;padding:13px;min-height:128px;display:flex;flex-direction:column;justify-content:space-between;gap:12px}.product:hover{border-color:#f5a34e;box-shadow:0 7px 20px rgba(245,130,32,.12)}.product:disabled{opacity:.45;cursor:not-allowed}.product .p-icon{width:37px;height:37px;border-radius:10px;display:grid;place-items:center;background:#fff1e2;font-size:19px}.product b{display:block;font-size:13px;margin-bottom:4px}.product small{color:var(--muted);font-size:11px}.product strong{font-size:14px;color:#1769d2}
+.cart-line{display:grid;grid-template-columns:1fr auto;gap:8px;padding:12px 0;border-bottom:1px solid var(--line)}.cart-line b{font-size:13px}.cart-line small{display:block;color:var(--muted);margin-top:3px}.qty{display:flex;align-items:center;gap:7px}.qty button{padding:4px 10px;background:#edf1fa;color:#233b7a}.totals{display:grid;gap:9px;margin:15px 0}.total-row{display:flex;justify-content:space-between;color:var(--muted);font-size:13px}.total-row.final{font-size:18px;color:var(--text);font-weight:800;padding-top:11px;border-top:1px solid var(--line)}
+.empty{padding:30px 15px;text-align:center;color:var(--muted);font-size:13px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field{display:grid;gap:6px;font-size:12px;font-weight:700}.field input,.field select,.field textarea{width:100%;min-width:0}.field.full{grid-column:1/-1}.hint{font-size:11px;color:var(--muted);line-height:1.6;margin-top:16px}.notice{padding:12px 14px;border-radius:10px;background:#fff7e6;color:#875c13;font-size:12px;line-height:1.5;margin-bottom:16px}
+.nav-overlay{position:fixed;inset:0;background:rgba(8,20,38,.45);z-index:35;opacity:0;pointer-events:none;transition:opacity .2s}
+.nav-overlay.show{opacity:1;pointer-events:auto}
+.toast{position:fixed;right:22px;bottom:22px;background:#0e2a4e;color:#fff;padding:13px 17px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.2);z-index:100;max-width:min(420px,calc(100vw - 30px));font-size:13px;border-left:4px solid #ff922e;opacity:0;transform:translateY(12px);transition:all .25s;pointer-events:none}.toast.show{opacity:1;transform:translateY(0)}.toast.err{border-left-color:#dc2626}
+.modal-overlay{position:fixed;inset:0;background:rgba(8,20,38,.55);display:grid;place-items:center;z-index:60;padding:16px}.modal{background:var(--panel);color:var(--text);border-radius:16px;padding:22px;width:min(480px,100%);max-height:90vh;overflow:auto;box-shadow:0 24px 60px rgba(0,0,0,.35);border-top:4px solid var(--accent)}.modal.wide{width:min(680px,100%)}.modal h3{margin:0 0 16px;font-size:18px}.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:20px}
+.hidden{display:none!important}
+body:not(.authenticated) .app{display:none}
+.login-screen{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 12% 12%,#d9eaff,transparent 42%),radial-gradient(circle at 88% 85%,#ffe8d1,transparent 36%),var(--bg)}body.authenticated .login-screen{display:none}.login-card{width:min(430px,100%);background:var(--panel);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:20px;padding:30px;box-shadow:0 22px 60px rgba(14,42,78,.14)}.login-brand{display:flex;align-items:center;gap:12px;margin-bottom:24px}.login-card h2{margin:0 0 6px;font-size:23px}.login-card p{font-size:13px;line-height:1.6;color:var(--muted)}.login-card .field{margin:16px 0}.login-card input{width:100%;border:1px solid var(--line);border-radius:10px;padding:13px;background:var(--panel);color:var(--text)}.login-error{color:var(--red);font-size:12px;min-height:18px;margin:6px 0}
+@media(max-width:1050px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-main{grid-template-columns:1fr}.content{padding:20px}.product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:720px){.topbar{height:64px;padding:0 14px}.crumb,.search{display:none}.content{padding:16px 12px}.pos-layout{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<section class="login-screen" aria-label="Acesso">
+  <form class="login-card" id="loginForm">
+    <div class="login-brand"><div class="logo">WD</div><div><strong>PDV-WD</strong><div style="font-size:12px;color:var(--muted);margin-top:3px">Gestão Comercial Integrada</div></div></div>
+    <h2>Iniciar sessão</h2>
+    <p>Introduz o teu PIN de acesso para continuar.</p>
+    <label class="field" for="loginCode">PIN de acesso<input id="loginCode" type="password" inputmode="numeric" autocomplete="current-password" placeholder="••••••" required autofocus></label>
+    <div class="login-error" id="loginError" role="alert"></div>
+    <button class="primary block" type="submit">Entrar</button>
+  </form>
+</section>
+
+<div class="app">
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><div class="logo">WD</div><div><h1>PDV-WD</h1><small>Gestão Comercial Integrada</small></div></div>
+  <div id="navRoot"></div>
+  <div class="sidebar-bottom" id="sidebarUser">PDV-WD<br>v2.0 · Moçambique · MZN</div>
+</aside>
+<main class="main">
+<header class="topbar">
+  <div class="top-left"><button class="mobile-menu" id="menuBtn" aria-label="Abrir menu">☰</button><div><h2 id="topTitle">Visão geral</h2><div class="crumb">PDV-WD / <span id="crumb">Painel</span></div></div></div>
+  <div class="top-actions"><input class="search" id="globalSearch" placeholder="Pesquisar produtos..." aria-label="Pesquisar produtos"><button class="secondary" id="themeBtn" title="Alternar tema">☾</button><div class="avatar" id="userAvatar" title="">?</div><button class="logout-btn" id="logoutBtn" type="button">Sair</button></div>
+</header>
+<div class="content" id="content"></div>
+</main>
+</div>
+
+<div class="nav-overlay" id="navOverlay"></div>
+<div id="modalRoot"></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script>
+'use strict';
+// ===================== helpers =====================
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=n=>new Intl.NumberFormat('pt-MZ',{style:'currency',currency:'MZN',maximumFractionDigits:2}).format(+n||0);
+const uid=p=>p+'-'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const todayISO=()=>new Date().toLocaleDateString('en-CA');
+const nowTime=()=>new Date().toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'});
+const fmtDT=iso=>new Date(iso).toLocaleString('pt-PT',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+const DB={get(k,f){try{const v=JSON.parse(localStorage.getItem('sv_'+k));return v===null||v===undefined?f:v;}catch(e){return f;}},set(k,v){localStorage.setItem('sv_'+k,JSON.stringify(v));}};
+
+// ===================== camada de dados: LOCAL (sem servidor) =====================
+// PDV-WD v2 em modo local: toda a informação fica neste dispositivo
+// (localStorage). Os PINs existem apenas como hash SHA-256.
+const ROLE_LABEL={administrador:'Administrador',gerente:'Gerente',gestor_stock:'Gestor de Stock',operador_caixa:'Operador de Caixa',vendedor:'Vendedor/Servente'};
+const SUPER_PIN_HASH='2dfe2460c61959fa3c960ad30888cc09a55be8d2432741dc8c00827b2bd16d8e';
+const SEED_ADMIN_HASH='5817ae4948371f9b6b7d94615c0704e6a13ba5a773938351ebd832d0fcdbdf2f';
+const PERMS_BY_ROLE={
+ gerente:['day.open','day.close','cash.open','cash.close','sales.create','sales.view','sales.pay','sales.discount','sales.cancel','tables.open','bills.print','invoices.view','products.manage','stock.view','reports.view','audit.view','kds.view'],
+ gestor_stock:['invoices.create','invoices.view','stock.receive','stock.transfer','stock.issue','stock.view','products.manage','reports.view','kds.view'],
+ operador_caixa:['day.open','day.close','cash.open','cash.close','sales.create','sales.view','sales.pay','sales.discount','tables.open','bills.print'],
+ vendedor:['tables.open','bills.print','sales.create']
+};
+function sha256(ascii){ // SHA-256 em JS puro (sem crypto.subtle — funciona em qualquer contexto)
+ function rr(v,a){return(v>>>a)|(v<<(32-a));}
+ var maxWord=Math.pow(2,32),result='',words=[],asciiBitLength=ascii.length*8;
+ var hash=sha256.h=sha256.h||[],k=sha256.k=sha256.k||[];
+ var primeCounter=k.length,isComposite={},candidate,i,j;
+ for(candidate=2;primeCounter<64;candidate++){
+  if(!isComposite[candidate]){
+   for(i=0;i<313;i+=candidate)isComposite[i]=candidate;
+   hash[primeCounter]=(Math.pow(candidate,.5)*maxWord)|0;
+   k[primeCounter++]=(Math.pow(candidate,1/3)*maxWord)|0;
+  }
+ }
+ ascii+='\x80';
+ while(ascii.length%64-56)ascii+='\x00';
+ for(i=0;i<ascii.length;i++){j=ascii.charCodeAt(i);words[i>>2]|=j<<((3-i)%4)*8;}
+ words[words.length]=((asciiBitLength/maxWord)|0);
+ words[words.length]=(asciiBitLength);
+ for(j=0;j<words.length;){
+  var w=words.slice(j,j+=16);
+  var oldHash=hash;hash=hash.slice(0,8);
+  for(i=0;i<64;i++){
+   var w15=w[i-15],w2=w[i-2];
+   var a=hash[0],e=hash[4];
+   var t1=hash[7]+(rr(e,6)^rr(e,11)^rr(e,25))+((e&hash[5])^((~e)&hash[6]))+k[i]
+    +(w[i]=(i<16)?w[i]:(w[i-16]+(rr(w15,7)^rr(w15,18)^(w15>>>3))+w[i-7]+(rr(w2,17)^rr(w2,19)^(w2>>>10)))|0);
+   var t2=(rr(a,2)^rr(a,13)^rr(a,22))+((a&hash[1])^(a&hash[2])^(hash[1]&hash[2]));
+   hash=[(t1+t2)|0].concat(hash);hash[4]=(hash[4]+t1)|0;
+  }
+  for(i=0;i<8;i++)hash[i]=(hash[i]+oldHash[i])|0;
+ }
+ for(i=0;i<8;i++)for(j=3;j+1;j--){var b=(hash[i]>>(j*8))&255;result+=((b<16)?0:'')+b.toString(16);}
+ return result;
+}
+
+const D={products:[],customers:[],sales:[],cash_sessions:[],cash_movements:[],settings:[],profiles:[],tables:[],bills:[],bill_items:[],stock_levels:[],stock_movements:[],supplier_invoices:[],invoice_items:[],operating_days:[],audit_log:[],role_permissions:[],suppliers:[],time_entries:[],credit_payments:[]};
+let seq={};
+let currentUser=null;
+function persistD(){try{localStorage.setItem('pdvwd_db',JSON.stringify({D,seq}));}catch(e){toast('Armazenamento local cheio ou indisponível.','error');}}
+function loadD(){try{const s=JSON.parse(localStorage.getItem('pdvwd_db'));if(s&&s.D&&s.D.products){Object.assign(D,s.D);seq=s.seq||{};const n=(D.role_permissions||[]).length;D.role_permissions=(D.role_permissions||[]).filter(r=>!(r.role==='operador_caixa'&&r.permission==='stock.view'));['suppliers','time_entries','credit_payments'].forEach(t=>{if(!Array.isArray(D[t]))D[t]=[];});D.products.forEach(pr=>{if(pr.promo_price===undefined)pr.promo_price=0;});if(!D.settings.some(x=>x.key==='commission'))D.settings.push({key:'commission',value:0});if(!D.settings.some(x=>x.key==='promo'))D.settings.push({key:'promo',value:{active:false,from:'17:00',to:'19:00'}});persistD();return true;}}catch(e){}return false;}
+function seedD(){
+ const P=[
+  [1,'Água mineral 500ml','BEB-001','Bebidas',35,10,'un','bar',80,'💧'],
+  [2,'Refrigerante lata','BEB-002','Bebidas',60,25,'un','bar',42,'🥤'],
+  [3,'Café expresso','CAF-001','Cafeteria',75,18,'un','bar',120,'☕'],
+  [4,'Sanduíche misto','LAN-001','Comidas',180,60,'un','cozinha',24,'🥪'],
+  [5,'Hambúrguer clássico','LAN-002','Comidas',320,110,'un','cozinha',15,'🍔'],
+  [6,'Batatas fritas','LAN-003','Comidas',140,45,'un','cozinha',20,'🍟'],
+  [7,'Arroz (1 kg)','RET-001','Retalho',95,70,'kg','bar',55,'🍚'],
+  [8,'Óleo alimentar 1L','RET-002','Retalho',150,95,'un','bar',18,'🛢️'],
+  [9,'Bolo de fatia','DOC-001','Pastelaria',110,40,'un','cozinha',9,'🍰']
+ ];
+ D.products=P.map(p=>({id:p[0],name:p[1],sku:p[2],category:p[3],price:p[4],cost_price:p[5],unit:p[6],sector:p[7],stock:p[8],min_stock:5,icon:p[9]}));
+ D.stock_levels=P.map(p=>({product_id:p[0],location:'bar',qty:p[8]}));
+ D.customers=[{id:1,name:'Cliente balcão',phone:'',email:'',notes:''}];
+ D.tables=[...Array(12)].map((_,i)=>({id:i+1,label:'Mesa '+(i+1),sector:'sala',status:'livre'}));
+ D.settings=[{key:'business',value:'PDV-WD'},{key:'taxRate',value:16},{key:'allow_negative_stock',value:false}];
+ D.profiles=[{id:'adm-1',name:'Administrador',role:'administrador',active:true,pin_hash:SEED_ADMIN_HASH,created_at:new Date().toISOString()}];
+ Object.entries(PERMS_BY_ROLE).forEach(([role,ps])=>ps.forEach(p=>D.role_permissions.push({role,permission:p})));
+ D.suppliers=[{id:1,name:'Distribuidora Exemplo',nuit:'',phone:'',email:'',notes:''}];
+ D.settings.push({key:'commission',value:0},{key:'promo',value:{active:false,from:'17:00',to:'19:00'}});
+ seq={customers:1,tables:12,bill_items:0,movements:0,invoices:0,invitems:0,audit:0,suppliers:1,time:0,credit:0};
+ persistD();
+}
+
+function perm(p){const u=currentUser;if(!u)return false;const r=u.app_metadata.role;return r==='administrador'||(u.app_metada
